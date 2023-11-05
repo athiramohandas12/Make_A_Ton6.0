@@ -12,7 +12,8 @@ import {
   FormControl,
   InputLabel,
   Box,
-  TextField, // Adding TextField from MUI
+  TextField,
+  Button,
 } from '@mui/material';
 import './prediction.css'; // Import your CSS file
 
@@ -27,21 +28,18 @@ const App = () => {
 
   const handleDayChange = (event) => {
     setSelectedDay(event.target.value);
-    updatePrediction(event.target.value, selectedMeal, totalPeople);
   };
 
   const handleMealChange = (event) => {
     setSelectedMeal(event.target.value);
-    updatePrediction(selectedDay, event.target.value, totalPeople);
   };
 
   const handleTotalPeopleChange = (event) => {
-    setTotalPeople(parseInt(event.target.value)); // Parse the input value to an integer
-    updatePrediction(selectedDay, selectedMeal, parseInt(event.target.value));
+    setTotalPeople(parseInt(event.target.value) || 0); // Parse the input value to an integer
   };
 
-  const updatePrediction = (day, meal, count) => {
-    const text = `Prediction for ${day} ${meal} for ${count} people`;
+  const updatePrediction = () => {
+    const text = `Prediction for ${selectedDay} ${selectedMeal} for ${totalPeople} people`;
     let imageUrl = 'https://via.placeholder.com/150'; // Placeholder image URL
 
     setPrediction({ text, imageUrl });
@@ -102,6 +100,12 @@ const App = () => {
             value={totalPeople}
             onChange={handleTotalPeopleChange}
           />
+        </Box>
+
+        <Box sx={{ paddingTop: '20px' }}>
+          <Button variant="contained" onClick={updatePrediction}>
+            Predict
+          </Button>
         </Box>
 
         <Card sx={{ marginTop: '20px' }}>
