@@ -1,5 +1,3 @@
-// App.js
-
 import React, { useState } from 'react';
 import {
   AppBar,
@@ -14,6 +12,7 @@ import {
   FormControl,
   InputLabel,
   Box,
+  TextField, // Adding TextField from MUI
 } from '@mui/material';
 import './prediction.css'; // Import your CSS file
 
@@ -24,19 +23,25 @@ const App = () => {
     text: 'Prediction text will appear here',
     imageUrl: 'https://via.placeholder.com/150', // Placeholder image URL
   });
+  const [totalPeople, setTotalPeople] = useState(0); // State for total count of people
 
   const handleDayChange = (event) => {
     setSelectedDay(event.target.value);
-    updatePrediction(event.target.value, selectedMeal);
+    updatePrediction(event.target.value, selectedMeal, totalPeople);
   };
 
   const handleMealChange = (event) => {
     setSelectedMeal(event.target.value);
-    updatePrediction(selectedDay, event.target.value);
+    updatePrediction(selectedDay, event.target.value, totalPeople);
   };
 
-  const updatePrediction = (day, meal) => {
-    const text = `Prediction for ${day} ${meal}`;
+  const handleTotalPeopleChange = (event) => {
+    setTotalPeople(parseInt(event.target.value)); // Parse the input value to an integer
+    updatePrediction(selectedDay, selectedMeal, parseInt(event.target.value));
+  };
+
+  const updatePrediction = (day, meal, count) => {
+    const text = `Prediction for ${day} ${meal} for ${count} people`;
     let imageUrl = 'https://via.placeholder.com/150'; // Placeholder image URL
 
     setPrediction({ text, imageUrl });
@@ -87,6 +92,16 @@ const App = () => {
               <MenuItem value="Dinner">Dinner</MenuItem>
             </Select>
           </FormControl>
+        </Box>
+
+        <Box sx={{ paddingTop: '20px' }}>
+          <TextField
+            id="total-people"
+            label="Total People"
+            type="number"
+            value={totalPeople}
+            onChange={handleTotalPeopleChange}
+          />
         </Box>
 
         <Card sx={{ marginTop: '20px' }}>
